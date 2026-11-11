@@ -1,4 +1,45 @@
-# DP-RFS Hybrid
+# DP-RFS Hybrid (Discontinued)
+
+## Discontinued: 2026-11-11
+
+**This project is deprecated. We discontinued the DP-specific paper direction
+after the frozen coherent-model study failed its predefined tracking criteria.**
+The code, tests, raw results, and historical experiments remain available for
+reproducibility and reuse. No further tuning or full-PMBM integration is planned.
+
+### What we learned
+
+- Prior-free track-history likelihoods, uncertain birth times, and analytically
+  integrated Gaussian centers provide a defensible conditional model. The
+  replacement passed all 53 tests and the exact-reference particle-accuracy
+  checks. Filtered posteriors must not simply be reused as independent raw
+  observations: they already contain the tracking prior.
+- Correct inference and better density prediction do not guarantee better
+  tracking. On held-out seeds 200-299, DP's primary RMS GOSPA was **5.0006 versus
+  4.7626 for the development-selected KDE baseline**, or **5.00% worse**
+  (paired 95% interval: **3.78% to 6.24% worse**). The protocol required at least
+  a 3% improvement. Nonrecurring-birth GOSPA was **56.95% worse**, also failing
+  the 5% degradation guardrail.
+- Replay predictive log loss improved by **0.7313 nats** (95% interval:
+  **0.6844 to 0.7784**), but a finite Bayesian mixture nearly matched that gain.
+  This does not establish a uniquely DP-specific tracking contribution.
+- Confirmation does not eliminate selection bias, clutter histories, or
+  fragmentation. Shrinking DP residual mass combined with birth admission is
+  a plausible explanation for missed novel regions, not a proven causal result.
+
+These results justify stopping this project, not a universal claim that DP
+birth learning cannot work. The exact reference, likelihood construction,
+tests, and negative results remain useful research infrastructure; a separate
+paper contribution from them has not been established.
+
+See the [frozen results and provenance](results/coherent_birth_20261003/README.md)
+and the [full decision memo with uncertainty, failure examples, and limitations](https://github.com/FlorianPfaff/DEPRECATED_2026-07-DP-RFS-Hybrid-Paper/blob/main/notes/coherent-birth-20261003/decision.md).
+
+## Historical Documentation
+
+The material below describes the earlier prototypes and is retained for
+reproduction. Its positive historical comparisons do not supersede the final
+controlled study or justify submission-ready claims.
 
 Reference sandbox for Dirichlet-process layers inside RFS-style multitarget trackers.
 
@@ -7,7 +48,9 @@ The first prototype keeps the RFS side intentionally modest: an independent labe
 - a DP birth model for reusable birth regions inferred from unexplained measurements;
 - clutter density models for structured measurement-space clutter, including a fixed Gaussian-mixture baseline and an adaptive DP clutter model learned from soft clutter responsibilities.
 
-This repository is the implementation sandbox for the companion paper notes in `FlorianPfaff/2026-07-DP-RFS-Hybrid-Paper`. Mature pieces can be upstreamed to PyRecEst later in small, reviewable increments.
+This repository was the implementation sandbox for the companion paper notes in
+[`FlorianPfaff/DEPRECATED_2026-07-DP-RFS-Hybrid-Paper`](https://github.com/FlorianPfaff/DEPRECATED_2026-07-DP-RFS-Hybrid-Paper).
+Upstreaming to PyRecEst was an earlier goal, not an active commitment.
 
 ## Design principle
 
